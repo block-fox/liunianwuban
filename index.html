@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>添加新纪录</title>
+  <style>
+    body {
+      background-color: #87CEEB; /* 天蓝色 */
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+      background-color: #FFFFFF; /* 白色 */
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid black;
+    }
+
+    th {
+      background-color: #666;
+      color: white;
+    }
+
+    input[type="button"], input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="button"]:hover, input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 添加新纪录的窗口 -->
+  <div id="add-row-form" style="display:none;">
+    <h3>添加新纪录</h3>
+    <form>
+      <label for="name">姓名:</label>
+      <input type="text" id="name" name="name"><br><br>
+
+      <label for="class">班级:</label>
+      <input type="text" id="class" name="class"><br><br>
+
+      <label for="occupation">职业:</label>
+      <select id="occupation" name="occupation">
+        <option value="student">学生</option>
+        <option value="teacher">老师</option>
+      </select><br><br>
+
+      <label for="introduction">个人简介:</label>
+      <textarea id="introduction" name="introduction"></textarea><br><br>
+
+      <input type="button" value="记录" onclick="addRow()">
+      <input type="button" value="取消" onclick="hideForm()">
+    </form>
+  </div>
+
+  <!-- 学生和老师的表格 -->
+  <table>
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>班级</th>
+        <th>职业</th>
+        <th>个人简介</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="record-list">
+      <tr>
+        <td>例：张三</td>
+        <td>1班</td>
+        <td>学生</td>
+        <td>一个就读于某某学校的学生</td>
+        <td><button onclick="deleteRow(this)">删除</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 添加新纪录的按钮 -->
+  <button id="add-row-button">添加新纪录</button>
+
+  <!-- 管理员登录 -->
+  <div id="admin-login" style="display:none;">
+    <h3>管理员登录</h3>
+    <form>
+      <label for="pwd">密码:</label>
+      <input type="password" id="pwd" name="pwd"><br><br>
+
+      <p id="error-message" style="display:none; color:red;">密码错误，请重新输入！</p>
+      
+      <input type="button" value="登录" onclick="login()">
+      <input type="button" value="取消" onclick="hideAdminLogin()">
+    </form>
+  </div>
+
+  <!-- 管理员登录的按钮 -->
+  <button id="admin-login-button">管理员登录</button>
+
+  <script>
+    const addRowButton = document.getElementById('add-row-button');
+    const addRowForm = document.getElementById('add-row-form');
+    const recordList = document.getElementById('record-list');
+    const adminLoginButton = document.getElementById('admin-login-button');
+    const adminLoginForm = document.getElementById('admin-login');
+    const pwdInput = document.getElementById('pwd');
+    const errorMessage = document.getElementById('error-message');
+
+    // 监听"添加新纪录"按钮的单击事件
+    addRowButton.addEventListener('click', function() {
+      addRowForm.style.display = 'block'; // 显示表单
+    });
+
+    // 记录一行数据到表格上
+    function addRow() {
+      const name = document.getElementById('name').value;
+      const className = document.getElementById('class').value;
+      const occupation = document.getElementById('occupation').value;
+      const introduction = document.getElementById('introduction').value;
+
+      // 创建表格中的一行，并添加相应的单元格
+      const newRow = recordList.insertRow(-1); // 在末尾插入一行
+
+      const nameCell = newRow.insertCell();
+      nameCell.textContent = name;
+
+      const classCell = newRow.insertCell();
+      classCell.textContent = className;
+
+      const occupationCell = newRow.insertCell();
+      occupationCell.textContent = occupation;
+
+      const introCell = newRow
